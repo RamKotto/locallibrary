@@ -27,7 +27,8 @@ def index(request):
 
 class BookListView(generic.ListView):
     model = Book
-    
+    paginate_by = 2
+
     # paginate_by = 10
     # template_name = 'books/my_arbitrary_template_name_list.html' # Имя нашего шаблона, и его расположение
     #
@@ -40,3 +41,7 @@ class BookListView(generic.ListView):
     #     # Добавляем новую переменную
     #     context['some_data'] = 'This is some data'
     #     return context
+
+
+class BookDetailView(generic.DetailView):
+    model = Book

@@ -109,3 +109,8 @@ class Author(models.Model):
         String for representing the Model object
         """
         return '{1} {0}'.format(self.last_name, self.first_name)
+
+    class Meta:
+        ordering = ['last_name']
+        verbose_name = 'Автор'
+        verbose_name_plural = 'Авторы'
