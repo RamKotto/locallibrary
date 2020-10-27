@@ -1,0 +1,16 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+    <h1>{{ author.first_name}}  {{author.last_name}}</h1>
+    <hr>
+    <h3>Список книг автора:</h3>
+    {% for book in author.book_set.all %}
+
+        <ul>
+            <li><a href="{% url 'book-detail' book.id %}">{{ book.title }}</a></li>
+        </ul>
+
+    {% endfor %}
+
+{% endblock %}
