@@ -1,6 +1,6 @@
 {% extends 'base_generic.html' %}
 {% load static %}
-{% block style %}<link rel="stylesheet" href="{% static 'css/styles_index.css' %}">{% endblock %}
+
 {% block content %}
 
 <h1>Local Library Home</h1>
@@ -16,6 +16,8 @@
         <li><strong>Copies available:</strong>{{num_instances_available}}</li>
         <li><strong>Authors:</strong>{{num_authors}}</li>
     </ul>
+
+    <p>You have visited this page {{num_visits}}{% if num_visits == 1 %} time{% else %} times{% endif %}.</p>
 
     <div class='librarian'>
         <h2>Milka the Librarian Dog:</h2>

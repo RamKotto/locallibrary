@@ -15,6 +15,13 @@ def index(request):
     num_instances_available = BookInstance.objects.filter(status__exact='a').count()
     num_authors = Author.objects.count() # Метод all() применен по умолчанию
 
+    #Добавляем счетчик посещения главной страницы пользователем
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+
+    #Удаляем значение счетчика посещений
+    #del request.session['num_visits']
+
     # Отрисовка HTML шаблона index.html с данными внутри переменной контекста context
     return render(request, 'index.html',
                   context = {
@@ -22,6 +29,7 @@ def index(request):
                              'num_instances'           : num_instances,
                              'num_instances_available' : num_instances_available,
                              'num_authors'             : num_authors,
+                             'num_visits'              : num_visits,  # Счетчик посещения
                   })
 
 

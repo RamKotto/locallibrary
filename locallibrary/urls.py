@@ -40,4 +40,8 @@ urlpatterns += [
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-
+# Add Django site authentication URLs
+# For login, logout, password managment
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls'))
+]
