@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Genre, Language, Book, BookInstance, Author
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 def index(request):
@@ -35,7 +36,7 @@ def index(request):
 
 class BookListView(generic.ListView):
     model = Book
-    paginate_by = 2
+    paginate_by = 10
 
     # paginate_by = 10
     # template_name = 'books/my_arbitrary_template_name_list.html' # Имя нашего шаблона, и его расположение
@@ -57,8 +58,34 @@ class BookDetailView(generic.DetailView):
 
 class AuthorListView(generic.ListView):
     model = Author
-    paginate_by = 2
+    paginate_by = 10
 
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+
+
+class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
+    """
+    Модель для вывода списка книг, которые взял пользователь.
+    """
+    model = BookInstance
+    template_name = 'catalog/bookinstance_list_borrowed_user.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower = self.request.user).filter(status__exact = 'o').order_by('due_back')
+
+
+class LoanedBooksListView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    """
+    Модель для просмотра всех заимствованных книг, для библиотекарей
+    """
+    model = BookInstance
+    template_name = 'catalog/bookinstance_list_borrowed.html'
+    paginate_by = 10
+
+    permission_required = ("catalog.can_mark_returned",)
+
+    def get_queryset(self):
+        return BookInstance.objects.filter(status__exact = 'o').order_by('due_back')
