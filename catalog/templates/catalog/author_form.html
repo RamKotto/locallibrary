@@ -1,0 +1,28 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+{% if perms.catalog.can_mark_returned %}
+
+<form action='' method='POST'>
+       {% csrf_token %}
+
+       <table>
+
+           {{ form.as_table }}
+
+        </table>
+
+        <input type='submit' value='Submit' />
+
+</form>
+
+        {% if author %}
+            <br>
+            <p><a href='{% url "author_delete" author.id %}' style='color:red;'>
+                Удалить автора</a></p>
+        {% endif %}
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+
+{% if perms.catalog.can_mark_returned %}
+
+<h1> Удаление автора:</h1>
+
+<p>Вы уверены, что хотите удалить автора: {{ author }} ?</p>
+
+<form action='' method='POST'>
+    {% csrf_token %}
+
+    <input type='submit' value='Да, удалить' />
+
+</form>
+
+{% endif %}
+
+{% endblock %}

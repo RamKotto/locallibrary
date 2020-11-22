@@ -4,7 +4,18 @@
 
     <h1>{{book.title}}</h1>
 
-    <p><strong>Author: </strong><a href="{% url 'author-detail' book.author.pk %}">{{book.author}}</a></p>
+    {% if perms.catalog.can_mark_returned %}
+        <p><a href='{% url "book_update" book.id %}'>Редактировать книгу</a></p>
+        <br>
+    {% endif %}
+
+    <p><strong>Author: </strong>
+        {% if book.author.pk %}
+            <a href="{% url 'author-detail' book.author.pk %}">{{book.author}}</a>
+        {% else %}
+            Автор неизвестен
+        {% endif %}
+    </p>
 
     <p><strong>Summary: </strong>{{book.summary}}</p>
 
