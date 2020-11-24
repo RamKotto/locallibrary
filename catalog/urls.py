@@ -23,4 +23,5 @@ urlpatterns = [
                                        name='book_update'),
     url(r'^book/(?P<pk>\d+)/delete/$', views.BookDelete.as_view(),
                                        name='book_delete'),
+    url(r'^registration/$', views.user_registration, name='registration'),
 ]

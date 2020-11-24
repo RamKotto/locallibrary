@@ -7,7 +7,8 @@ from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 import datetime
-from .forms import RenewBookForm
+from .forms import RenewBookForm, UserRegistrationForm
+from django.contrib.auth.models import Group
 
 
 def index(request):
@@ -148,12 +149,12 @@ class AuthorDelete(DeleteView):
     success_url = reverse_lazy('authors')   # Редирект, после удаления автора
 
 
+# Аналогично Author
 class BookCreate(CreateView):
     model = Book
     fields = '__all__'
 
 
-# Аналогично Author
 class BookUpdate(UpdateView):
     model = Book
     fields = '__all__'
@@ -162,3 +163,25 @@ class BookUpdate(UpdateView):
 class BookDelete(DeleteView):
     model = Book
     success_url = reverse_lazy('books')
+
+
+#  Регистрируем пользоваелей на основе кастомной формы 'UserRegistrationForm'
+def user_registration(request):
+        """
+        Функция для регистрации новых пользователей
+        """
+        if request.method == 'POST':
+            user_form = UserRegistrationForm(request.POST)
+            if user_form.is_valid():
+                # Создаем новый объект пользователя, но пока не сохраняем его
+                new_user = user_form.save(commit = False)
+                # Сохраняем пользователя и шифруем его пароль
+                new_user.set_password(user_form.cleaned_data['password'])
+                new_user.save()
+                # Добавляем нового пользователя в группу
+                user_group = Group.objects.get(name='Library Members')
+                user_group.user_set.add(new_user.id)
+                return HttpResponseRedirect(reverse('index'))
+        else:
+            user_form = UserRegistrationForm()
+        return render(request, 'catalog/registration.html', {'user_form': user_form})

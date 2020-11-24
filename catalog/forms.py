@@ -2,6 +2,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import datetime
+# Для регистрации пользователей:
+from django.contrib.auth.models import User
 
 
 class RenewBookForm(forms.Form):
@@ -19,4 +21,21 @@ class RenewBookForm(forms.Form):
             raise ValidationError(_('Invalid date - renewal more than 4 weeks ahead'))
 
         # Помните, что всегда нужно возвращать cleaned_data
-        return data 
+        return data
+
+
+# Регистрируем пользователей библиотеки
+class UserRegistrationForm(forms.ModelForm):
+    password = forms.CharField(label = 'Пароль:', widget = forms.PasswordInput)
+    password2 = forms.CharField(label = 'Повторите пароль:', widget = forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'email']
+
+    def clean_password2(self):
+        data = self.cleaned_data
+        print(data)
+        if data['password'] != data['password2']:
+            raise ValidationError(_('Пароли не совпадают!'))
+        return data['password2']
