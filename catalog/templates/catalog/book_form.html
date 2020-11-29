@@ -26,7 +26,8 @@
 
     {% if book %}
         <br>
-        <p><a href='{% url "book_delete" book.id %}'>Удалить книгу</a></p>
+        <p><a href='{% url "book_delete" book.id %}' style='color:red;'>
+            Удалить книгу</a></p>
     {% endif %}
 
 {% endif %}
