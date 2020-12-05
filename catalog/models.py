@@ -64,6 +64,10 @@ class Book(models.Model):
         """
         return reverse('book-detail', args = [str(self.id)])
 
+    class Meta:
+        ordering = ['title']
+
+
 
 class BookInstance(models.Model):
     """
