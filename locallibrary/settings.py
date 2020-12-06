@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '#sk!mg-a_a4&$fw^o*yr&=(m^@^hxf
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['.herokuapp.com','localhost', '127.0.0.1']
 
 
 # Application definition
@@ -134,6 +134,7 @@ STATIC_URL = '/static/'
 
 # Для переадресации на главную страницу, после авторизации:
 LOGIN_REDIRECT_URL = '/'
+
 
 # Для отображения ссылки сброса пароля пользователя в консоли
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
